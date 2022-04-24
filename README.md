@@ -1,5 +1,6 @@
 # integrate
 Code to integrate a two dimensional function over a triangulation
+Using Gauss-Jacobi quadrature 
 Example:
 import numpy as np
 v = np.array([[0.,0.],[1.,0],[0.,1],[1.,1.]) # vertices of a triangle
