@@ -15,6 +15,7 @@ def integral(v,t,g,q):
 #           q = 5
 #           val = integral(v,t,g,q)
 #          check that val = area of the region
+# by Shelvean Kapita, 2022
 # =============================================================================
     a = area(v,t)
     [t1,w1] = roots_jacobi(q,1,0) # Gauss Jacobi nodes/weights on [-1,1]
@@ -62,3 +63,31 @@ def stroudnodes(v,t,q):
     x = z[:,0,:].flatten() # corresponding points on the mesh
     y = z[:,1,:].flatten()
     return x.reshape(x.size,1),y.reshape(y.size,1)
+
+def triarea(v1, v2, v3):
+# =============================================================================
+#     # computes the signed area of a triangle with vertices v1, v2, v3
+#     # cc oriented triangles have positive signed area
+#     # clockwise oriented triangles return negative signed area
+# =============================================================================
+    v1 = v1.reshape(1,2)
+    v2 = v2.reshape(1,2)
+    v3 = v3.reshape(1,2)    
+    x = v1[0,0];  y = v1[0,1]
+    a = v2[0,0];  b = v2[0,1]
+    c = v3[0,0];  d = v3[0,1]    
+    A = ((a-x)*(d-y)-(c-x)*(b-y))/2
+    return A  
+    
+def area(v,t):
+# =============================================================================
+#     # returns vector of areas of the triangulation
+# =============================================================================
+    n = t.shape[0]
+    A = np.zeros(shape=(n,1)).flatten()
+    for i in np.arange(n):
+        v1 = v[t[i,0],:]
+        v2 = v[t[i,1],:]
+        v3 = v[t[i,2],:]
+        A[i] = np.abs(triarea(v1,v2,v3))
+    return A
